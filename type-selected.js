@@ -27,8 +27,8 @@
   overlay.style.position = 'absolute';
   overlay.style.zIndex = '9999';
   overlay.style.border = '1px solid #ccc';
-  overlay.style.backgroundColor = 'rgba(255, 255, 255, 0.97)';
-  overlay.style.padding = '5px';
+  overlay.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+  overlay.style.padding = '0px';
   overlay.style.boxSizing = 'border-box';
   overlay.style.display = 'none';
   overlay.style.fontFamily = 'monospace';
@@ -69,7 +69,7 @@
   highlightDiv.style.lineHeight = 'inherit';
   highlightDiv.style.whiteSpace = 'pre-wrap';
   highlightDiv.style.wordWrap = 'break-word';
-  highlightDiv.style.padding = '5px';
+  highlightDiv.style.padding = '0px';
   highlightDiv.style.boxSizing = 'border-box';
   overlay.appendChild(highlightDiv);
 
@@ -112,6 +112,20 @@
       originalText = selectedText;
       const range = selection.getRangeAt(0);
       const rect = range.getBoundingClientRect();
+
+      // Get the computed style of the selected text's container
+      const container = range.commonAncestorContainer;
+      if (container) {
+        const parentElement = container.nodeType === Node.ELEMENT_NODE ? container : container.parentElement;
+        if (parentElement) {
+          const computedStyle = window.getComputedStyle(parentElement);
+          overlay.style.fontFamily = computedStyle.fontFamily;
+          overlay.style.fontSize = computedStyle.fontSize;
+          overlay.style.fontWeight = computedStyle.fontWeight;
+          overlay.style.fontStyle = computedStyle.fontStyle;
+          overlay.style.lineHeight = computedStyle.lineHeight;
+        }
+      }
 
       // Position the overlay
       overlay.style.top = `${rect.top + window.scrollY}px`;
