@@ -29,7 +29,7 @@
   overlay.style.border = '1px solid #ccc';
   overlay.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
   overlay.style.padding = '0px';
-  overlay.style.boxSizing = 'border-box';
+  overlay.style.boxSizing = 'content-box';
   overlay.style.display = 'none';
   overlay.style.fontFamily = 'monospace';
   overlay.style.fontSize = '1em';
@@ -128,10 +128,10 @@
       }
 
       // Position the overlay
-      overlay.style.top = `${rect.top + window.scrollY}px`;
+      overlay.style.top = `${rect.top + window.scrollY - 2}px`;
       overlay.style.left = `${rect.left + window.scrollX}px`;
-      overlay.style.width = `${rect.width}px`;
-      overlay.style.height = `${rect.height}px`;
+      overlay.style.width = `${rect.width + 5}px`;
+      overlay.style.height = `${rect.height + 5}px`;
       overlay.style.display = 'block';
 
       // Set initial content and focus

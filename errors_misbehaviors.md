@@ -7,4 +7,13 @@ User type "Sometimes" in the input fields appears "Sosemitem"
 - Copy format from selected text to use it in created input fields (fixed)
 - Input area size is smaller than selected text area. The text does not fit in the input field
 ![alt text](input_area_size.png)
-- Need to render user input text a little higher (to be fixed)
+After the followint changes, I achieved the desired result.
+```javascript
+// Position the overlay
+      overlay.style.top = `${rect.top + window.scrollY - 2}px`;
+      overlay.style.left = `${rect.left + window.scrollX}px`;
+      overlay.style.width = `${rect.width + 5}px`;
+      overlay.style.height = `${rect.height + 5}px`;
+      overlay.style.display = 'block';
+```
+![alt text](input_area_size_fixed.png)
