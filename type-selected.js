@@ -78,6 +78,8 @@
   document.body.appendChild(overlay);
 
   let originalText = '';
+  let isDragging = false;
+  let offsetX, offsetY;
 
   // --- Toggle button functionality ---
   function updateToggleState() {
@@ -101,14 +103,20 @@
   updateToggleState();
 
   // --- Get selected text and its position ---
-  document.addEventListener('mouseup', () => {
+  document.addEventListener('mouseup', (e) => {
+    if (isDragging) {
+      isDragging = false;
+      overlay.style.cursor = 'default';
+      return;
+    }
+
     // Only process if verification is enabled
     if (!isVerificationEnabled) return;
 
     const selection = window.getSelection();
     const selectedText = selection.toString();
 
-    if (selectedText) {
+    if (selectedText && !overlay.contains(selection.anchorNode)) {
       originalText = selectedText;
       const range = selection.getRangeAt(0);
       const rect = range.getBoundingClientRect();
@@ -130,7 +138,7 @@
       // Position the overlay
       overlay.style.top = `${rect.top + window.scrollY - 2}px`;
       overlay.style.left = `${rect.left + window.scrollX}px`;
-      overlay.style.width = `${rect.width + 5}px`;
+      overlay.style.width = `${rect.width + 10}px`;
       overlay.style.height = `${rect.height + 5}px`;
       overlay.style.display = 'block';
 
@@ -138,8 +146,6 @@
       inputArea.value = '';
       inputArea.focus();
       highlightDiv.textContent = '';
-    } else {
-      overlay.style.display = 'none';
     }
   });
 
@@ -169,9 +175,6 @@
   });
 
   // --- Make the overlay draggable with Ctrl key ---
-  let isDragging = false;
-  let offsetX, offsetY;
-
   overlay.addEventListener('mousedown', (e) => {
     if (e.ctrlKey) {
       isDragging = true;
@@ -188,8 +191,20 @@
     }
   });
 
-  document.addEventListener('mouseup', () => {
-    isDragging = false;
-    overlay.style.cursor = 'default';
+  // --- Ctrl key transparency ---
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Control') {
+      overlay.style.opacity = '0.2';
+    }
+  });
+
+  document.addEventListener('keyup', (e) => {
+    if (e.key === 'Control') {
+      overlay.style.opacity = '1';
+    }
+  });
+
+  overlay.addEventListener('dblclick', () => {
+    overlay.style.display = 'none';
   });
 })();

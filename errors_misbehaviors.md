@@ -5,7 +5,7 @@ User type "Sometimes" in the input fields appears "Sosemitem"
 ![alt text](sometimes.png) (fixed)
 
 - Copy format from selected text to use it in created input fields (fixed)
-- Input area size is smaller than selected text area. The text does not fit in the input field
+- Input area size is smaller than selected text area. The text does not fit in the input field (fixed)
 ![alt text](input_area_size.png)
 After the followint changes, I achieved the desired result.
 ```javascript
@@ -17,3 +17,4 @@ After the followint changes, I achieved the desired result.
       overlay.style.display = 'block';
 ```
 ![alt text](input_area_size_fixed.png)
+- After dragging the input area, it disappears. The input area should be removed only by double clicking. (fixed)
