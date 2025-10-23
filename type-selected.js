@@ -1,4 +1,26 @@
 (function() {
+  // --- Toggle state ---
+  let isVerificationEnabled = true;
+
+  // --- Create toggle button ---
+  const toggleButton = document.createElement('button');
+  toggleButton.id = 'text-verification-toggle';
+  toggleButton.textContent = '✓ Text Verification: ON';
+  toggleButton.style.position = 'fixed';
+  toggleButton.style.top = '10px';
+  toggleButton.style.right = '10px';
+  toggleButton.style.zIndex = '10000';
+  toggleButton.style.padding = '8px 12px';
+  toggleButton.style.backgroundColor = '#4CAF50';
+  toggleButton.style.color = 'white';
+  toggleButton.style.border = 'none';
+  toggleButton.style.borderRadius = '4px';
+  toggleButton.style.cursor = 'pointer';
+  toggleButton.style.fontSize = '12px';
+  toggleButton.style.fontFamily = 'Arial, sans-serif';
+  toggleButton.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+  toggleButton.style.transition = 'all 0.3s ease';
+
   // --- Create the verification overlay ---
   const overlay = document.createElement('div');
   overlay.id = 'text-verification-overlay';
@@ -19,12 +41,39 @@
   inputArea.contentEditable = 'true';
   inputArea.style.outline = 'none';
   overlay.appendChild(inputArea);
+
+  // --- Add elements to page ---
+  document.body.appendChild(toggleButton);
   document.body.appendChild(overlay);
 
   let originalText = '';
 
+  // --- Toggle button functionality ---
+  function updateToggleState() {
+    if (isVerificationEnabled) {
+      toggleButton.textContent = '✓ Text Verification: ON';
+      toggleButton.style.backgroundColor = '#4CAF50';
+    } else {
+      toggleButton.textContent = '✗ Text Verification: OFF';
+      toggleButton.style.backgroundColor = '#f44336';
+      // Hide overlay when disabled
+      overlay.style.display = 'none';
+    }
+  }
+
+  toggleButton.addEventListener('click', () => {
+    isVerificationEnabled = !isVerificationEnabled;
+    updateToggleState();
+  });
+
+  // Initialize toggle state
+  updateToggleState();
+
   // --- Get selected text and its position ---
   document.addEventListener('mouseup', () => {
+    // Only process if verification is enabled
+    if (!isVerificationEnabled) return;
+
     const selection = window.getSelection();
     const selectedText = selection.toString();
 
