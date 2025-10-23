@@ -27,7 +27,7 @@
   overlay.style.position = 'absolute';
   overlay.style.zIndex = '9999';
   overlay.style.border = '1px solid #ccc';
-  overlay.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+  overlay.style.backgroundColor = 'rgba(255, 255, 255, 0.97)';
   overlay.style.padding = '5px';
   overlay.style.boxSizing = 'border-box';
   overlay.style.display = 'none';
@@ -37,10 +37,41 @@
   overlay.style.whiteSpace = 'pre-wrap';
   overlay.style.wordWrap = 'break-word';
 
-  const inputArea = document.createElement('div');
-  inputArea.contentEditable = 'true';
+  const inputArea = document.createElement('textarea');
   inputArea.style.outline = 'none';
+  inputArea.style.border = 'none';
+  inputArea.style.background = 'transparent';
+  inputArea.style.resize = 'none';
+  inputArea.style.padding = '0';
+  inputArea.style.margin = '0';
+  inputArea.style.fontSize = 'inherit';
+  inputArea.style.fontFamily = 'inherit';
+  inputArea.style.lineHeight = 'inherit';
+  inputArea.style.whiteSpace = 'pre-wrap';
+  inputArea.style.wordWrap = 'break-word';
+  inputArea.style.overflow = 'hidden';
+  inputArea.style.width = '100%';
+  inputArea.style.height = '100%';
+  inputArea.style.color = 'transparent';
+  inputArea.style.caretColor = 'black';
   overlay.appendChild(inputArea);
+
+  // Create a separate div for highlighting
+  const highlightDiv = document.createElement('div');
+  highlightDiv.style.position = 'absolute';
+  highlightDiv.style.top = '0';
+  highlightDiv.style.left = '0';
+  highlightDiv.style.width = '100%';
+  highlightDiv.style.height = '100%';
+  highlightDiv.style.pointerEvents = 'none';
+  highlightDiv.style.fontFamily = 'inherit';
+  highlightDiv.style.fontSize = 'inherit';
+  highlightDiv.style.lineHeight = 'inherit';
+  highlightDiv.style.whiteSpace = 'pre-wrap';
+  highlightDiv.style.wordWrap = 'break-word';
+  highlightDiv.style.padding = '5px';
+  highlightDiv.style.boxSizing = 'border-box';
+  overlay.appendChild(highlightDiv);
 
   // --- Add elements to page ---
   document.body.appendChild(toggleButton);
@@ -90,57 +121,37 @@
       overlay.style.display = 'block';
 
       // Set initial content and focus
-      inputArea.innerHTML = '';
+      inputArea.value = '';
       inputArea.focus();
+      highlightDiv.textContent = '';
     } else {
       overlay.style.display = 'none';
     }
   });
 
+  // --- Sync scrolling between textarea and highlight div ---
+  inputArea.addEventListener('scroll', () => {
+    highlightDiv.scrollTop = inputArea.scrollTop;
+    highlightDiv.scrollLeft = inputArea.scrollLeft;
+  });
+
   // --- Text comparison and highlighting ---
   inputArea.addEventListener('input', () => {
-    const typedText = inputArea.innerText;
-    let highlightedText = '';
+    // Get the current typed text from textarea
+    const typedText = inputArea.value;
+
+    // Create highlighted HTML for the background div
+    let highlightedHTML = '';
     for (let i = 0; i < typedText.length; i++) {
       if (i < originalText.length && typedText[i] === originalText[i]) {
-        highlightedText += `<span style="color: green;">${typedText[i]}</span>`;
+        highlightedHTML += `<span style="color: green;">${typedText[i]}</span>`;
       } else {
-        highlightedText += `<span style="color: red;">${typedText[i]}</span>`;
+        highlightedHTML += `<span style="color: red;">${typedText[i]}</span>`;
       }
     }
-    // To preserve the caret position, we need a more complex update
-    const selection = window.getSelection();
-    const range = selection.getRangeAt(0);
-    const startOffset = range.startOffset;
 
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = highlightedText;
-    const newNodes = Array.from(tempDiv.childNodes);
-
-    // Clear and append new nodes
-    inputArea.innerHTML = '';
-    newNodes.forEach(node => inputArea.appendChild(node));
-
-    // Restore caret position
-    const newRange = document.createRange();
-    if (inputArea.childNodes.length > 0) {
-        let currentNodeIndex = 0;
-        let cumulativeLength = 0;
-        let newOffset = 0;
-        while(currentNodeIndex < inputArea.childNodes.length && cumulativeLength + inputArea.childNodes[currentNodeIndex].textContent.length < startOffset) {
-            cumulativeLength += inputArea.childNodes[currentNodeIndex].textContent.length;
-            currentNodeIndex++;
-        }
-        if(currentNodeIndex < inputArea.childNodes.length) {
-            newOffset = startOffset - cumulativeLength;
-            newRange.setStart(inputArea.childNodes[currentNodeIndex].firstChild || inputArea.childNodes[currentNodeIndex], newOffset);
-        } else {
-             newRange.setStart(inputArea.lastChild, inputArea.lastChild.textContent.length);
-        }
-    }
-    newRange.collapse(true);
-    selection.removeAllRanges();
-    selection.addRange(newRange);
+    // Update only the highlight div, not the input
+    highlightDiv.innerHTML = highlightedHTML;
   });
 
   // --- Make the overlay draggable with Ctrl key ---
