@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation Fix Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-text {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            font-size: 16px;
+        }
+        .instructions {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        .fix-info {
+            background-color: #d4edda;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+        .expected-output {
+            background-color: #e2e3e5;
+            padding: 10px;
+            border-radius: 3px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Translation Fix Test</h1>
+
+        <div class="fix-info">
+            <h3>✅ Translation Issue Fixed:</h3>
+            <p><strong>Problem:</strong> Translation was showing fallback responses like "[RU] text" instead of actual translations.</p>
+            <p><strong>Solution:</strong> Removed unreliable CORS proxy and added direct Google Translate API call with improved fallback dictionary for basic translations.</p>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Test:</h3>
+            <ol>
+                <li>Open Chrome Developer Tools (F12)</li>
+                <li>Go to Console tab</li>
+                <li>Copy and paste the content of type-selected.js</li>
+                <li>Select any text below</li>
+                <li>Check translation for each language option</li>
+                <li>Should show actual translations, not "[EN] text"</li>
+            </ol>
+        </div>
+
+        <div class="test-text">
+            <h3>Test Text 1 - Simple Phrase:</h3>
+            <p>Hello world! This is amazing.</p>
+            <div class="expected-output">
+                <strong>Expected Russian:</strong> Привет мир! Это удивительный.<br>
+                <strong>Expected Latvian:</strong> Sveiki pasaule! Šis ir neparasts.
+            </div>
+        </div>
+
+        <div class="test-text">
+            <h3>Test Text 2 - Sample Description:</h3>
+            <p>This is a sample text for testing the translation functionality.</p>
+            <div class="expected-output">
+                <strong>Expected Russian:</strong> Это пример текста для тестирования функциональности перевода.<br>
+                <strong>Expected Latvian:</strong> Šis ir paraugs teksts priekš testēšana tulkojums funcionalitāte.
+            </div>
+        </div>
+
+        <div class="test-text">
+            <h3>Test Text 3 - Longer Sentence:</h3>
+            <p>The translation feature should work correctly for all three languages.</p>
+            <div class="expected-output">
+                <strong>Expected Russian:</strong> Функциональность перевода должна работать правильно для всех трех языков.<br>
+                <strong>Expected Latvian:</strong> Tulkojums funcionalitāte strādā pareizi priekš visu trīs valodas.
+            </div>
+        </div>
+
+        <div class="test-text">
+            <h3>Debug Information:</h3>
+            <p>Check the browser console for any translation errors. The API will try direct Google Translate first, then fall back to built-in dictionary if needed.</p>
+        </div>
+    </div>
+
+    <script>
+        console.log('Translation fix test page loaded.');
+        console.log('Expected behavior: Actual translations instead of [EN] text fallbacks');
+        console.log('If API fails, built-in dictionary provides basic translations.');
+    </script>
+</body>
+</html>

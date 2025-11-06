@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Verification with Translation Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-text {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            font-size: 16px;
+        }
+        .instructions {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Text Verification with Translation Test</h1>
+
+        <div class="instructions">
+            <h3>How to Test:</h3>
+            <ol>
+                <li>Open Chrome Developer Tools (F12)</li>
+                <li>Go to Console tab</li>
+                <li>Copy and paste the content of type-selected.js</li>
+                <li>Select any text below to start verification</li>
+                <li>Click the "T" button to toggle translation</li>
+                <li>Select a language and see real-time translation</li>
+            </ol>
+        </div>
+
+        <div class="test-text">
+            <h3>English Sample Text:</h3>
+            <p>This is a sample text for testing the text verification and translation functionality. Select this text to see the verification overlay appear. You can then enable translation and choose your preferred language.</p>
+        </div>
+
+        <div class="test-text">
+            <h3>Technical Documentation:</h3>
+            <p>The Chrome Console App provides real-time text verification with color-coded feedback. Green indicates correct characters while red shows mismatches. The new translation feature allows you to see instant translations in multiple languages as you type.</p>
+        </div>
+
+        <div class="test-text">
+            <h3>Short Phrase:</h3>
+            <p>Hello world! This is amazing.</p>
+        </div>
+    </div>
+
+    <script>
+        console.log('Page loaded. Ready to test the text verification and translation functionality.');
+        console.log('Paste the type-selected.js code into the console to begin.');
+    </script>
+</body>
+</html>
